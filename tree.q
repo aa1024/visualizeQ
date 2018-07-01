@@ -6,7 +6,7 @@ tree:{[t;col]
     :0!?[t;();(enlist `name)!enlist f ;enlist[`children]!enlist ({[r;c;l]tree[flip c!l;r]};enlist r;enlist c;(enlist, c ))]
    };
 
-jsonTree:{[name;tab;path] -1_1_.j.j ([] name:enlist name; children:enlist tree[tab;path])}
+jsonTree:{[name;data;path] -1_1_.j.j ([] name:enlist name; children:enlist tree[data;path])}
 
 
 
