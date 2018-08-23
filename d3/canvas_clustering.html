@@ -16,20 +16,16 @@
     var graph={nodes,links}, wsConn;    
 
 function start(){
-
     addNodeCanvas("A", "1");
     addNodeCanvas("B", "6");
     addNodeCanvas("C", "4");
     addNodeCanvas("D", "2");
     addNodeCanvas("E", "3");
 	addNodeCanvas("F", "1");
-	
     addLinkCanvas("A","B");
     addLinkCanvas("A","C");
-	
     addLinkCanvas("E","D");
 	addLinkCanvas("F","D");
-
     refresh();
 }
 
@@ -45,7 +41,6 @@ function addNodeCanvas(nodeName,g) {
   };
   var n = nodes.push(node);
 }
-
 
 function addLinkCanvas(idSrc, idTarget) {
 
@@ -70,8 +65,6 @@ function addLinkCanvas(idSrc, idTarget) {
   };
 
 }
-
-
 
 
     function refresh() {
