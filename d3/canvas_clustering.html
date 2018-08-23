@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<body onload="connect1();">
+<body onload="start();">
     <canvas width="800" height="600"></canvas>
     <button id="ref" onclick="refresh()">refresh </button>
     <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -15,7 +15,7 @@
 
     var graph={nodes,links}, wsConn;    
 
-function connect1(){
+function start(){
 
     addNodeCanvas("A", "1");
     addNodeCanvas("B", "6");
