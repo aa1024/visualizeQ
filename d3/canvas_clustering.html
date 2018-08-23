@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<body onload="connect1();">
+    <canvas width="400" height="400"></canvas>
+    <!--button id="ref" onclick="refresh()">refresh </button-->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+    
+  var canvas = document.querySelector("canvas"),
+      context = canvas.getContext("2d"),
+      width = canvas.width,
+      height = canvas.height;
+    var links =[] , nodes = [] ;
+
+    var graph={nodes,links}, wsConn;    
+
+function connect1(){
+
+    addNodeCanvas("A", "1");
+    addNodeCanvas("B", "6");
+    addNodeCanvas("C", "4");
+    addNodeCanvas("D", "2");
+    addNodeCanvas("E", "3");
+	addNodeCanvas("F", "1");
+	
+    addLinkCanvas("A","B");
+    addLinkCanvas("A","C");
+	
+    addLinkCanvas("E","D");
+	addLinkCanvas("F","D");
+
+    refresh();
+}
+
+
+var nodeColors = d3.scaleOrdinal().range(d3.schemeCategory20);
+
+function addNodeCanvas(nodeName,g) {
+  var node = {
+    x: 400,
+    y: 400,
+    id: nodeName,
+    grp:g
+  };
+  var n = nodes.push(node);
+}
+
+
+function addLinkCanvas(idSrc, idTarget) {
+
+    if (idSrc != idTarget) {
+    var s = {},
+      t = {};
+    nodes.forEach(function(curNode) {
+      if (typeof curNode.id != "undefined") {
+        if (curNode.id == idSrc) {
+          s = curNode;
+        }
+        if (curNode.id == idTarget) {
+          t = curNode;
+        }
+      }
+    });
+
+    links.push({
+      source: s,
+      target: t
+    });
+  };
+
+}
+
+
+
+
+    function refresh() {
+
+            var simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(function(d) { 
+                return d.id; 
+            }))
+            .force("charge", d3.forceManyBody())
+            .force("center", d3.forceCenter(width / 2, height / 2));
+
+        simulation
+            .nodes(nodes)
+            .on("tick", ticked)
+            .force("link")
+            .links(links);
+        d3.select(canvas)
+            .call(d3.drag()
+                .container(canvas)
+                .subject(dragsubject)
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+
+        function ticked() {
+            var margin = 20;
+            nodes.forEach(function(d) {
+                d.x = Math.max(margin, Math.min(width - margin, d.x))
+                d.y = Math.max(margin, Math.min(height - margin, d.y))
+            });
+
+            function dblclick() {
+                nodes.forEach(function(d) {
+                    d.fx = d.fy = null;
+                })
+            };
+            context.clearRect(0, 0, width, height);
+            context.beginPath();
+            links.forEach(drawLink);
+            context.strokeStyle = "#aaa";
+            context.stroke();
+            context.beginPath();
+            nodes.forEach(drawNode);
+
+        }
+
+        function dragsubject() {
+            return simulation.find(d3.event.x, d3.event.y);
+        }
+        var clickDate = new Date();
+        var difference_ms;
+
+        function dragstarted() {
+            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+            d3.event.subject.fx = Math.max(10, Math.min(width - 10, d3.event.subject.x));
+            d3.event.subject.fy = Math.max(10, Math.min(height - 10, d3.event.subject.y));
+        }
+
+        function dragged() {
+            d3.event.subject.fx = Math.max(10, Math.min(width - 10, d3.event.x));
+            d3.event.subject.fy = Math.max(10, Math.min(height - 10, d3.event.y));
+        }
+
+
+        function dragended() {
+           
+        }
+
+
+        function drawLink(d) {
+            context.moveTo(d.source.x, d.source.y);
+            context.lineTo(d.target.x, d.target.y);
+        }
+
+        var nodeColors = d3.scaleOrdinal().range(d3.schemeCategory20),
+            labelColors = d3.scaleOrdinal().range(['red', 'orange', 'blue', 'green', 'purple']);
+
+        function drawNode(d) {
+            context.beginPath();
+            context.moveTo(d.x + 10, d.y);
+            context.arc(d.x, d.y, 10, 0, 2 * Math.PI);
+            context.strokeStyle = "#fff";
+            context.stroke();
+            context.fillStyle = nodeColors(d.grp);
+            context.closePath();
+            context.fill();
+            context.beginPath();
+            context.font = (d.labelSize ? d.labelSize : 10) + 'px Arial';
+            context.fillStyle = labelColors(d.grp);
+            context.fillText(d.id ? d.id : d.grp, d.x, d.y);
+            context.closePath();
+        }
+    }
+    </script>
+</body>
+
+</html>
