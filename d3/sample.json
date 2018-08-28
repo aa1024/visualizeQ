@@ -1,0 +1,17 @@
+{"name":"/",
+	"children":[
+		{"name":"etc","children":[
+			{"name":"network","children":[
+				{"name":"interfaces", "size":10}]}]},
+		{"name":"bin", "size":10},
+		{"name":"home","children":[
+			{"name":"john","children":[
+				{"name":"pics", "size":10},
+				{"name":"docs", "size":10}]},
+			{"name":"scott","children":[
+				{"name":"web","children":[
+					{"name":"html", "size":10}]}]}]},
+		{"name":"usr","children":[
+			{"name":"lib", "size":10},
+			{"name":"local", "size":10}]}]
+}
